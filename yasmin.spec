@@ -7,6 +7,7 @@ Epoch:		1
 License:	GPL
 Group:		X11/Applications
 Source0:	http://home.tiscalinet.be/genglebi/packages/%{name}-%{version}.tar.gz
+# Source0-md5:	0726b969a1431b0e9f9834defe9fbbe3
 Patch0:		%{name}-make.patch
 Patch1:		%{name}-c++.patch
 URL:		http://home.tiscalinet.be/genglebi/
