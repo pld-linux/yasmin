@@ -16,7 +16,6 @@ BuildRequires:	zlib-devel
 BuildRequires:	libstdc++-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		_prefix		/usr/X11R6
 
 %description
 Yasmin (which stands for Yet Another Simulating Interpreter) is a
