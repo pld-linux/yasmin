@@ -1,0 +1,41 @@
+diff -urN yasmin-0.6.0.org/Makefile yasmin-0.6.0/Makefile
+--- yasmin-0.6.0.org/Makefile	Fri Feb 16 13:13:49 2001
++++ yasmin-0.6.0/Makefile	Fri Feb 16 13:42:44 2001
+@@ -15,7 +15,7 @@
+ 
+ # Compiling with support libraries
+ SYSCONF_CXXFLAGS_X11	= -I/usr/X11R6/include
+-SYSCONF_CXXFLAGS_QT	= -I$(QTDIR)/include
++SYSCONF_CXXFLAGS_QT	= -I/usr/X11R6/include/qt
+ SYSCONF_CXXFLAGS_OPENGL	= -I/usr/X11R6/include
+ 
+ # Compiline YACC output
+@@ -26,7 +26,7 @@
+ SYSCONF_LFLAGS_X11	= -L/usr/X11R6/lib
+ SYSCONF_LIBS_X11	= -lXext -lX11 -lm
+ # Qt, Qt+OpenGL
+-SYSCONF_LFLAGS_QT	= -L$(QTDIR)/lib
++SYSCONF_LFLAGS_QT	= -L/usr/X11R6/lib
+ SYSCONF_LIBS_QT		= -lqt
+ SYSCONF_LIBS_QT_OPENGL	= -lqgl
+ # OpenGL
+@@ -44,7 +44,7 @@
+ SYSCONF_LFLAGS_SHOBJ	= -shared
+ 
+ # Meta-object compiler
+-SYSCONF_MOC		= $(QTDIR)/bin/moc
++SYSCONF_MOC		= /usr/X11R6/bin/moc
+ 
+ # Linking shared libraries
+ #   - Build the $(TARGET) library, eg. lib$(TARGET).so.2.0.1
+@@ -72,8 +72,8 @@
+ SYSCONF_LINK_LIB_STATIC	= rm -f $(DESTDIR)$(SYSCONF_LINK_TARGET_STATIC) ; \
+ 				 $(SYSCONF_AR) $(DESTDIR)$(SYSCONF_LINK_TARGET_STATIC) $(OBJECTS) $(OBJMOC) 
+ # Compiling application source
+-SYSCONF_CXXFLAGS	= -pipe -DNO_DEBUG -O2  
+-SYSCONF_CFLAGS		= -pipe -DNO_DEBUG -O2  
++SYSCONF_CXXFLAGS	= -pipe -DNO_DEBUG $(OPT_FLAGS)
++SYSCONF_CFLAGS		= -pipe -DNO_DEBUG $(OPT_FLAGS)
+ # Compiling library source
+ SYSCONF_CXXFLAGS_LIB	= -fPIC
+ SYSCONF_CFLAGS_LIB	= -fPIC
