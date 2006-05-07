@@ -1,0 +1,21 @@
+--- yasmin-0.6.0/mainwidget.cc~	2000-02-24 16:29:20.000000000 +0000
++++ yasmin-0.6.0/mainwidget.cc	2006-05-07 17:26:45.000000000 +0000
+@@ -70,15 +70,15 @@
+      QToolButton *rfb = new QToolButton (QPixmap (runfastXpm), "Run without output",
+                                          "Grouptext", sim, SLOT (runFast ()), tb);
+      rfb->setUsesBigPixmap (true);
+-     QToolButton *stopb = new QToolButton (stopXpm, "Stop running",
++     QToolButton *stopb = new QToolButton (QPixmap (stopXpm), "Stop running",
+                                            "Grouptext",
+                                            sim, SLOT (stop ()), tb);
+      stopb->setUsesBigPixmap (true);
+-     QToolButton *resetb = new QToolButton (resetXpm, "Reset", "Grouptext",
++     QToolButton *resetb = new QToolButton (QPixmap (resetXpm), "Reset", "Grouptext",
+                                            sim, SLOT (reset ()), tb);
+      resetb->setUsesBigPixmap (true);
+ 
+-     QToolButton *quitb = new QToolButton (quitXpm, "Exit", "Grouptext",
++     QToolButton *quitb = new QToolButton (QPixmap (quitXpm), "Exit", "Grouptext",
+                                            this, SLOT (quit ()), tb);
+      quitb->setUsesBigPixmap (true);
+      tb->addSeparator();
