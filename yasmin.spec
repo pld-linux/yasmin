@@ -10,6 +10,7 @@ Source0:	http://home.tiscalinet.be/genglebi/packages/%{name}-%{version}.tar.gz
 # Source0-md5:	0726b969a1431b0e9f9834defe9fbbe3
 Patch0:		%{name}-make.patch
 Patch1:		%{name}-c++.patch
+Patch2:		%{name}-cast.patch
 URL:		http://home.tiscalinet.be/genglebi/
 BuildRequires:	qt-devel
 BuildRequires:	libpng-devel
@@ -38,10 +39,18 @@ pamiêci danych, rejestrów itp.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 touch *.h
-OPT_FLAGS="%{rpmcflags}" %{__make}
+%{__make} \
+	SYSCONF_CXX="%{__cxx}" \
+	SYSCONF_LINK="%{__cxx}" \
+	OPT_FLAGS="%{rpmcflags} -I%{_includedir}/qt -Wno-deprecated" \
+	SYSCONF_MOC="%{_bindir}/moc"		\
+	SYSCONF_LFLAGS_QT="-L%{_libdir}"	\
+	SYSCONF_LIBS_QT="-lqt-mt"		\
+	SYSCONF_LFLAGS_X11="-L%{_prefix}/X11R6/%{_lib}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
