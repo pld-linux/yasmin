@@ -12,10 +12,10 @@ Patch0:		%{name}-make.patch
 Patch1:		%{name}-c++.patch
 Patch2:		%{name}-cast.patch
 URL:		http://home.tiscalinet.be/genglebi/
-BuildRequires:	qt-devel
 BuildRequires:	libpng-devel
-BuildRequires:	zlib-devel
 BuildRequires:	libstdc++-devel
+BuildRequires:	qt-devel
+BuildRequires:	zlib-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 
@@ -50,7 +50,7 @@ touch *.h
 	SYSCONF_MOC="%{_bindir}/moc"		\
 	SYSCONF_LFLAGS_QT="-L%{_libdir}"	\
 	SYSCONF_LIBS_QT="-lqt-mt"		\
-	SYSCONF_LFLAGS_X11="-L%{_prefix}/X11R6/%{_lib}"
+	SYSCONF_LFLAGS_X11="-L%{_libdir}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
