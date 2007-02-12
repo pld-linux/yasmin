@@ -1,5 +1,5 @@
 Summary:	8051 simulator
-Summary(pl.UTF-8):   Symulator 8051
+Summary(pl.UTF-8):	Symulator 8051
 Name:		yasmin
 Version:	0.6.0
 Release:	1
