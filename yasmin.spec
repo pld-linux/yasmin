@@ -1,5 +1,5 @@
 Summary:	8051 simulator
-Summary(pl):	Symulator 8051
+Summary(pl.UTF-8):   Symulator 8051
 Name:		yasmin
 Version:	0.6.0
 Release:	1
@@ -28,12 +28,12 @@ environment, which includes breakpoints, stepwise running through the
 program (Step in, step out, step over), overview of the data memory,
 clear overview of the special function registers, etc...
 
-%description -l pl
-Yasmin jest prostym ale o du¿ych mo¿liwo¶ciach symulatorem
-mikrokontrolera 80c51. Program czyta Twój kod asemblera i symuluje
-jego wykonanie na mikrokontrolerze. Symylator zawiera pe³ne ¶rodowisko
-developerskie w³±czaj±c w to breakpointy, pracê krokow±, przegl±d
-pamiêci danych, rejestrów itp.
+%description -l pl.UTF-8
+Yasmin jest prostym ale o duÅ¼ych moÅ¼liwoÅ›ciach symulatorem
+mikrokontrolera 80c51. Program czyta TwÃ³j kod asemblera i symuluje
+jego wykonanie na mikrokontrolerze. Symylator zawiera peÅ‚ne Å›rodowisko
+developerskie wÅ‚Ä…czajÄ…c w to breakpointy, pracÄ™ krokowÄ…, przeglÄ…d
+pamiÄ™ci danych, rejestrÃ³w itp.
 
 %prep
 %setup -q
