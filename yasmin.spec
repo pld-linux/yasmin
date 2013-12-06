@@ -2,7 +2,7 @@ Summary:	8051 simulator
 Summary(pl.UTF-8):	Symulator 8051
 Name:		yasmin
 Version:	0.6.0
-Release:	2
+Release:	3
 Epoch:		1
 License:	GPL
 Group:		X11/Applications

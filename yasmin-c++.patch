@@ -1,10 +1,264 @@
-diff -urN yasmin-0.6.0.org/8051.cc yasmin-0.6.0/8051.cc
---- yasmin-0.6.0.org/8051.cc	Fri Feb 16 13:13:49 2001
-+++ yasmin-0.6.0/8051.cc	Fri Feb 16 13:26:43 2001
-@@ -1447,55 +1447,55 @@
+diff -ur yasmin-0.6.0/8051.cc yasmin-0.6.0-c++/8051.cc
+--- yasmin-0.6.0/8051.cc	2013-12-06 19:54:10.919605532 +0100
++++ yasmin-0.6.0-c++/8051.cc	2013-12-06 19:51:46.579606576 +0100
+@@ -16,8 +16,8 @@
+  *
+  */
+  
+-#include <iostream.h>
+-#include <iomanip.h>
++#include <iostream>
++#include <iomanip>
+ #include <qfiledialog.h>
+ #include "8051.h"
+ #include "memory.h"
+@@ -146,8 +146,8 @@
+           SFR tmp; // psoedo SFR with new variable name
+           if (varNameOk (instr))
+                if (is_a_nr (op2)) {
+-                    cerr << "Adding " << instr << " to sfr_info as " << op2 <<
+-                         endl;
++                    std::cerr << "Adding " << instr << " to sfr_info as " << op2 <<
++                         std::endl;
+                     tmp.type = byte;
+                     tmp.address = asm_to_char (op2);
+                     sfr_info.add (instr, tmp);
+@@ -346,7 +346,7 @@
+ {
+      if (labels.contains(op1)) {
+           if (DEBUG_2)
+-               cout << "Jumping to " << op1 << ", line "
++               std::cout << "Jumping to " << op1 << ", line "
+                     << labels[op1] << "\n";
+           text->setCurLine (labels[op1]);
+      }
+@@ -382,13 +382,13 @@
+               (op1[2] == '0' || op1[2] == '1') &&
+               op1[3] == 0) {                      // Allow R0 and R1, nothing else
+                if (DEBUG_2)
+-                    cout << "Indirect dest addr: "
++                    std::cout << "Indirect dest addr: "
+                          << (int) sfr_info[op2].address
+                          << ", addr2: "
+                          << (int) da (sfr_info[op2].address)
+                          << ", value = "
+                          << (int) ida (da (sfr_info[op2].address))
+-                         << endl;
++                         << std::endl;
+                dest_addr = da(sfr_info[op1 + 1].address);
+                dest_type = BYTE;
+                direct = 0;             // like I said, it's indirect
+@@ -398,8 +398,8 @@
+      } else if (sfr_info.contains(op1))
+           if (sfr_info[op1].type == byte) {
+                if (DEBUG)
+-                    cerr << "dest_addr = "
+-                         << (int)sfr_info[op1].address << endl;
++                    std::cerr << "dest_addr = "
++                         << (int)sfr_info[op1].address << std::endl;
+                dest_addr = sfr_info[op1].address;
+                dest_type = BYTE;
+           }
+@@ -438,9 +438,9 @@
+                                         op2[2] == '1') &&
+               op2[3] == 0) {
+                if (DEBUG)
+-                    cout << "Indirect source addr: " << (int) sfr_info[op2].address
++                    std::cout << "Indirect source addr: " << (int) sfr_info[op2].address
+                          << ", addr2: " << (int) da (sfr_info[op2 + 1].address)
+-                         << ", value = " << (int) ida (da (sfr_info[op2+ 1].address)) << endl;
++                         << ", value = " << (int) ida (da (sfr_info[op2+ 1].address)) << std::endl;
+                source_value = ida ( da (sfr_info[op2 +1 ].address));
+                source_type = BYTE;
+           }
+@@ -463,7 +463,7 @@
+           if (direct) {
+                da (dest_addr) = source_value;
+                if (DEBUG_2)
+-                    cout << "Direct move  ";
++                    std::cout << "Direct move  ";
+           }
+           else 
+                ida (dest_addr) = source_value;
+@@ -478,12 +478,12 @@
+      zero = (source_value == 0);
+      
+      if (DEBUG_2) {
+-          cout << "Moving " << op2 << " (" << int (source_value)
+-               << ") to " << op1 << " (" << setbase(16)
+-               << (int)dest_addr << ")" << setbase(10) << "   => "
+-               << (int)da(dest_addr) << endl;
+-          cout << "dest_type = " << dest_type << ", source_type == "
+-               << source_type << endl;
++          std::cout << "Moving " << op2 << " (" << int (source_value)
++               << ") to " << op1 << " (" << std::setbase(16)
++               << (int)dest_addr << ")" << std::setbase(10) << "   => "
++               << (int)da(dest_addr) << std::endl;
++          std::cout << "dest_type = " << dest_type << ", source_type == "
++               << source_type << std::endl;
+      }
+      incLN;
+      cycles++;
+@@ -517,9 +517,9 @@
+      
+ //     unsigned char psw_addr = sfr_info["PSW"].address;
+      if (DEBUG) {
+-          cerr << "Addition; source = " << int(source_value) << endl;
+-          cerr << "          dest_addr = " << (int)dest_addr << " = "
+-               << (int)da(dest_addr) << endl;
++          std::cerr << "Addition; source = " << int(source_value) << std::endl;
++          std::cerr << "          dest_addr = " << (int)dest_addr << " = "
++               << (int)da(dest_addr) << std::endl;
+      }
+      if (((da (dest_addr) & 0x0F) + (source_value & 0x0F)) & 0xF0)
+           da (PSW) |= AC;
+@@ -529,7 +529,7 @@
+      da (dest_addr) += source_value;
+      
+      if (DEBUG)
+-          cerr << "result : " << (int) da (dest_addr) << endl;
++          std::cerr << "result : " << (int) da (dest_addr) << std::endl;
+      if (negative && (da (dest_addr) >= 0)) 
+           da (PSW) |= CY;
+      else
+@@ -543,10 +543,10 @@
+      zero = da (dest_addr) == 0;
+      
+      if (DEBUG)
+-          cerr << "result : " << (int) da (dest_addr) << endl;
++          std::cerr << "result : " << (int) da (dest_addr) << std::endl;
+      if (DEBUG_2)
+-          cout << "Adding " << op2 << " (" << (int)source_value
+-               << ") to " << op1 << endl;
++          std::cout << "Adding " << op2 << " (" << (int)source_value
++               << ") to " << op1 << std::endl;
+      incLN;
+      cycles++;
+ }
+@@ -596,8 +596,8 @@
+      zero = da (dest_addr) == 0;
+   
+      if (DEBUG_2)
+-          cout << "Adding " << op2 << " (" << (int)source_value << ") to "
+-               << op1 << endl;
++          std::cout << "Adding " << op2 << " (" << (int)source_value << ") to "
++               << op1 << std::endl;
+      incLN;
+      cycles++;
+ }
+@@ -607,7 +607,7 @@
+ 
+      int carry = (da (PSW) & CY) != 0;
+      if (DEBUG)
+-          cout << "Carry = " << carry << endl;
++          std::cout << "Carry = " << carry << std::endl;
+      unsigned int Acc = 1 << 8;
+      
+      unsigned char dest_addr;
+@@ -619,12 +619,12 @@
+      Acc |= (unsigned char) da (dest_addr);
+ 
+      if (DEBUG)
+-          cout << "A = " << Acc << setbase(16) << " = " << Acc << setbase (10) << endl;
++          std::cout << "A = " << Acc << std::setbase(16) << " = " << Acc << std::setbase (10) << std::endl;
+ 
+      Acc = Acc - source - carry;
+ 
+      if (DEBUG)
+-          cout << "A = " << Acc << setbase(16) << " = " << Acc << setbase(10) << endl;
++          std::cout << "A = " << Acc << std::setbase(16) << " = " << Acc << std::setbase(10) << std::endl;
+      
+      if (!(Acc & (1 << 8)))
+           da (PSW) |= CY;
+@@ -882,8 +882,8 @@
+                source_is_bit = 1;
+                source_value = is_bit_set (sfr_info[op2].address);
+                if (DEBUG)
+-                    cerr << "source-value == " << (int)source_value
+-                         << ", address = " << setbase(16) << (int)sfr_info[op2].address << setbase(10) << endl;
++                    std::cerr << "source-value == " << (int)source_value
++                         << ", address = " << std::setbase(16) << (int)sfr_info[op2].address << std::setbase(10) << std::endl;
+           }
+           else
+                source_value = da (sfr_info[op2].address);
+@@ -896,10 +896,10 @@
+           error ("Invalid source");
+ 
+      if (DEBUG)
+-          cerr << "source is bit: " << (source_is_bit ? "true" : "false")
++          std::cerr << "source is bit: " << (source_is_bit ? "true" : "false")
+                << ", val = " << (int)source_value << "\n dest is bit : "
+                << (dest_is_bit ? "true" : "false") << " dest_address = "
+-               << (int)dest_addr << " val = " << is_bit_set (dest_addr) << endl;
++               << (int)dest_addr << " val = " << is_bit_set (dest_addr) << std::endl;
+   
+      if (source_is_bit && dest_is_bit)
+           if (is_bit_set(dest_addr) && source_value)
+@@ -951,8 +951,8 @@
+                source_is_bit = 1;
+                source_value = is_bit_set (sfr_info[op2].address);
+                if (DEBUG)
+-                    cerr << "source-value == " << (int)source_value
+-                         << ", address = " << setbase(16) << (int)sfr_info[op2].address << setbase(10) << endl;
++                    std::cerr << "source-value == " << (int)source_value
++                         << ", address = " << std::setbase(16) << (int)sfr_info[op2].address << std::setbase(10) << std::endl;
+           }
+           else
+                source_value = da (sfr_info[op2].address);
+@@ -965,10 +965,10 @@
+           error ("Invalid source");
+ 
+      if (DEBUG)
+-          cerr << "source is bit: " << (source_is_bit ? "true" : "false")
++          std::cerr << "source is bit: " << (source_is_bit ? "true" : "false")
+                << ", val = " << (int)source_value << "\n dest is bit : "
+                << (dest_is_bit ? "true" : "false") << " dest_address = "
+-               << (int)dest_addr << " val = " << is_bit_set (dest_addr) << endl;
++               << (int)dest_addr << " val = " << is_bit_set (dest_addr) << std::endl;
+   
+      if (source_is_bit && dest_is_bit)
+           if (is_bit_set(dest_addr) || source_value)
+@@ -1020,8 +1020,8 @@
+                source_is_bit = 1;
+                source_value = is_bit_set (sfr_info[op2].address);
+                if (DEBUG)
+-                    cerr << "source-value == " << (int)source_value
+-                         << ", address = " << setbase(16) << (int)sfr_info[op2].address << setbase(10) << endl;
++                    std::cerr << "source-value == " << (int)source_value
++                         << ", address = " << std::setbase(16) << (int)sfr_info[op2].address << std::setbase(10) << std::endl;
+           }
+           else
+                source_value = da (sfr_info[op2].address);
+@@ -1034,10 +1034,10 @@
+           error ("Invalid source");
+ 
+      if (DEBUG)
+-          cerr << "source is bit: " << (source_is_bit ? "true" : "false")
++          std::cerr << "source is bit: " << (source_is_bit ? "true" : "false")
+                << ", val = " << (int)source_value << "\n dest is bit : "
+                << (dest_is_bit ? "true" : "false") << " dest_address = "
+-               << (int)dest_addr << " val = " << is_bit_set (dest_addr) << endl;
++               << (int)dest_addr << " val = " << is_bit_set (dest_addr) << std::endl;
+   
+      if (source_is_bit && dest_is_bit)
+           if (is_bit_set(dest_addr) ^ source_value)
+@@ -1437,65 +1437,65 @@
+           incLN;
+ 
+      if (DEBUG)
+-          cout << "CJNE called. dest = " << (int)dest << ", source = "
++          std::cout << "CJNE called. dest = " << (int)dest << ", source = "
+                << (int)source << ", label = " << op3
+-               << " of which line nr = " << labels.get (op3) << endl;
++               << " of which line nr = " << labels.get (op3) << std::endl;
+      cycles+=2;
+ }
+ 
+ void Sim8051::createMT (void)
  {
       if (DEBUG)
-           cerr << "Creating mnemonic table... ";
+-          cerr << "Creating mnemonic table... ";
++          std::cerr << "Creating mnemonic table... ";
 -     mnemonic["ADD"] = &add; 
 -     mnemonic["ADDC"] = &addc;
 -     mnemonic["SUBB"] = &sub_borrow;
@@ -105,3 +359,311 @@ diff -urN yasmin-0.6.0.org/8051.cc yasmin-0.6.0/8051.cc
    
       if (DEBUG)
            cerr << "Done.\n";
+@@ -1498,12 +1498,12 @@
+      mnemonic["MOVC"] = &Sim8051::no_movc;
+   
+      if (DEBUG)
+-          cerr << "Done.\n";
++          std::cerr << "Done.\n";
+ }
+ 
+ void Sim8051::int0_int (void)
+ {
+-//     cerr << "int 0 interrupt generated " << (da (IE) & 0x80) << ";  " << (da (IE) & 0x01) << endl;
++//     std::cerr << "int 0 interrupt generated " << (da (IE) & 0x80) << ";  " << (da (IE) & 0x01) << std::endl;
+ //     interrupt_stack.show();
+      if ((da(IE) & 0x80) && (da (IE) & 0x01)) {
+           if (!interrupt_stack.contains_higher (external_0,
+diff -ur yasmin-0.6.0/debugwidget.cc yasmin-0.6.0-c++/debugwidget.cc
+--- yasmin-0.6.0/debugwidget.cc	2000-02-24 17:29:20.000000000 +0100
++++ yasmin-0.6.0-c++/debugwidget.cc	2013-12-06 19:46:06.542942372 +0100
+@@ -23,8 +23,8 @@
+ #include <qimage.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+-#include <iostream.h>
+-#include <fstream.h>
++#include <iostream>
++#include <fstream>
+ #include "general.h"
+ #include <qsizepolicy.h>
+ 
+@@ -591,7 +591,7 @@
+           strcpy (filename, fileName);
+      }
+      txt.free();
+-     ifstream ifs (filename);
++     std::ifstream ifs (filename);
+      int i = 0, j;
+      char buf[151], c;
+      c = ifs.get();
+@@ -664,8 +664,8 @@
+           filename = new char [strlen (fileName) + 1];
+           strcpy (filename, fileName);
+      }
+-     cout << "Save file was here " << filename << endl;
+-     ofstream ofs (filename);
++     std::cout << "Save file was here " << filename << endl;
++     std::ofstream ofs (filename);
+      for (int  i = 0; i < txt.getNumLines(); i++)
+           ofs << txt.getChars (i) << endl;
+      
+diff -ur yasmin-0.6.0/general.cc yasmin-0.6.0-c++/general.cc
+--- yasmin-0.6.0/general.cc	2000-02-24 17:29:20.000000000 +0100
++++ yasmin-0.6.0-c++/general.cc	2013-12-06 19:52:12.072939725 +0100
+@@ -17,7 +17,8 @@
+  */
+  
+ #include "general.h"
+-#include <iostream.h>
++#include <iostream>
++#include <cstring>
+ #include <stdio.h>
+ 
+ #define CY 0x80
+@@ -186,7 +187,7 @@
+           else
+                char_val = *tmp - '0';
+           if (char_val < 0 || char_val >= base) {
+-               cout << "Wrong constant! " << s << endl;
++               std::cout << "Wrong constant! " << s << std::endl;
+                return 0;
+           }
+           else 
+diff -ur yasmin-0.6.0/hashtable.h yasmin-0.6.0-c++/hashtable.h
+--- yasmin-0.6.0/hashtable.h	2000-02-24 17:29:20.000000000 +0100
++++ yasmin-0.6.0-c++/hashtable.h	2013-12-06 19:53:07.466272657 +0100
+@@ -19,7 +19,8 @@
+ #ifndef HASHTABLE_H
+ #define HASHTABLE_H
+ 
+-#include <iostream.h>
++#include <iostream>
++#include <cstring>
+ 
+ template <class T>
+ 
+@@ -173,12 +174,12 @@
+   node *tmp;
+   for (int i = 0; i < hashSize; i++) {
+     tmp = table[i];
+-    cout << i << ": ";
++    std::cout << i << ": ";
+     while (tmp) {
+-      cout << tmp->key << "<->" << (int)tmp->value << "  ";
++       std::cout << tmp->key << "<->" << (int)tmp->value << "  ";
+       tmp = tmp->next;
+     }
+-    cout << endl;
++    std::cout << std::endl;
+   }
+ }
+ 
+diff -ur yasmin-0.6.0/int_stack.cc yasmin-0.6.0-c++/int_stack.cc
+--- yasmin-0.6.0/int_stack.cc	2000-02-24 17:29:20.000000000 +0100
++++ yasmin-0.6.0-c++/int_stack.cc	2013-12-06 19:53:22.016272551 +0100
+@@ -17,7 +17,7 @@
+  */
+  
+ #include "int_stack.h"
+-#include <iostream.h>
++#include <iostream>
+ 
+ // #define NULL 0
+ 
+@@ -119,10 +119,10 @@
+ void isr_stack::show(void)
+ {
+      stack_node *tmp = root;
+-     cout << " ||";
++     std::cout << " ||";
+      while (tmp) {
+-	  cout << "-> val = " << tmp->type << ", P = " << tmp->HP;
++	  std::cout << "-> val = " << tmp->type << ", P = " << tmp->HP;
+ 	  tmp = tmp->next;
+      }
+-     cout << endl;
++     std::cout << std::endl;
+ }
+diff -ur yasmin-0.6.0/linetext.cc yasmin-0.6.0-c++/linetext.cc
+--- yasmin-0.6.0/linetext.cc	2000-02-24 17:29:20.000000000 +0100
++++ yasmin-0.6.0-c++/linetext.cc	2013-12-06 19:51:01.316273571 +0100
+@@ -18,8 +18,11 @@
+  
+ #include "linetext.h"
+ 
+-#include <iostream.h>
++#include <iostream>
++#include <cstring>
+ #include <stdio.h>
++#include <cstdlib>
++#include <unistd.h>
+ 
+ // char buf[50];
+ 
+@@ -45,7 +48,7 @@
+ {
+ 
+      if (nr >= nol) {
+-	  cerr << "Line nr (" << nr << ") >= number of lines (" << nol <<")\n";
++	  std::cerr << "Line nr (" << nr << ") >= number of lines (" << nol <<")\n";
+ 	  throw new int (1);
+      }
+ 
+@@ -163,8 +166,8 @@
+      try {
+           l = getLine (nr);
+      } catch (int *c) {
+-          cout << "Exception catched: " << c << endl;
+-          exit(1);
++          std::cout << "Exception catched: " << c << std::endl;
++	  exit(1);
+      }
+      ins = new line;
+      ins->data = 0;
+@@ -220,34 +223,34 @@
+ 
+ void LineText::print()
+ {
+-     cout << "Number of lines = " << nol << endl;
++     std::cout << "Number of lines = " << nol << std::endl;
+      line *r;
+ 
+      for (int i = 0; i < CUTS; i++) {
+ 	  r = lines[i];
+ 	  while (r) {
+-	       cout << r->data << " (" << r->length << ") ";
++	       std::cout << r->data << " (" << r->length << ") ";
+ 	       if (r->right && r->right->left == r)
+-		    cout << " <--> ";
++		    std::cout << " <--> ";
+ 	       else
+-		    cout << " --> ";
++		    std::cout << " --> ";
+ 	       r = r->right;
+ 	  }
+-	  cout << "(earth)\n";
++	  std::cout << "(earth)\n";
+      }
+ 
+ /*     r = lines[0];
+      while (r) {
+ 	  if (r->left)
+-	       cout << r->left->data << (r->left->right == r ? " <--> " : " <-- ");
++	       std::cout << r->left->data << (r->left->right == r ? " <--> " : " <-- ");
+ 	  else
+-	       cout << "E <-- ";
+-	  cout << r->data;
++	       std::cout << "E <-- ";
++	  std::cout << r->data;
+ 	  if (r->right)
+-	       cout << (r->right->left == r ? " <--> " : " --> ") << r->right->data;
++	       std::cout << (r->right->left == r ? " <--> " : " --> ") << r->right->data;
+ 	  else
+-	       cout << " --> (E)";
+-	  cout << endl;
++	       std::cout << " --> (E)";
++	  std::cout << std::endl;
+ 	  r = r->down;
+ 	  }*/
+ }
+@@ -322,7 +325,7 @@
+      }
+ 
+      if (pos > l->length) {
+-          cerr << "Error [LineText::insertChar(char *c, line *l, unsigned short pos)]:\n               pos >  line length!!\n";
++          std::cerr << "Error [LineText::insertChar(char *c, line *l, unsigned short pos)]:\n               pos >  line length!!\n";
+ //	  snprintf(buf, 50, "insertChar(...): pos > line length!!");
+           throw new int (6);
+      }
+@@ -412,7 +415,7 @@
+      line *second = insertLine (line_nr + 1);
+      if (first->data) {
+ 	  if (pos > first->length) {
+-	       cerr << "Splitting after the end of the line\n";
++	       std::cerr << "Splitting after the end of the line\n";
+ 	       throw new int (8);
+ 	  }
+ 	  setData (second, first->data + pos);
+@@ -425,13 +428,13 @@
+ {
+      line *first = getLine (line_nr);
+      if (!first) {
+-	  cerr << line_nr << " is a null line !?\n";
++	  std::cerr << line_nr << " is a null line !?\n";
+ 	  throw new int (9);
+      }
+ 	  
+      line *second = first->down;
+      if (!second) {
+-	  cerr << line_nr+1 << " does not exist!!!!\n";
++	  std::cerr << line_nr+1 << " does not exist!!!!\n";
+ 	  throw new int (10);
+      }
+ 
+diff -ur yasmin-0.6.0/mainwidget.cc yasmin-0.6.0-c++/mainwidget.cc
+--- yasmin-0.6.0/mainwidget.cc	2013-12-06 19:54:10.922938865 +0100
++++ yasmin-0.6.0-c++/mainwidget.cc	2013-12-06 19:53:43.289605731 +0100
+@@ -21,6 +21,7 @@
+ #include <qtoolbar.h>
+ #include <qtoolbutton.h>
+ #include "xpms.inc"
++#include <cstdlib>
+ 
+ MainWidget::MainWidget (QWidget *parent, const char *name)
+      : QMainWindow (parent, name)
+diff -ur yasmin-0.6.0/memory.cc yasmin-0.6.0-c++/memory.cc
+--- yasmin-0.6.0/memory.cc	2000-02-24 17:29:20.000000000 +0100
++++ yasmin-0.6.0-c++/memory.cc	2013-12-06 19:52:42.969606168 +0100
+@@ -17,8 +17,8 @@
+  */
+  
+ #include "memory.h"
+-#include <iostream.h>
+-#include <iomanip.h>
++#include <iostream>
++#include <iomanip>
+ 
+ #define DEBUG 0
+ 
+@@ -135,7 +135,7 @@
+     *ptr = '0' + i;
+     tmp.address = address + i;
+     if (DEBUG)
+-      cerr << "Adding bit address " << buf << " address = 0x" << setbase(16)
++      std::cerr << "Adding bit address " << buf << " address = 0x" << std::setbase(16)
+ 	   << (int) tmp.address << "\n";
+     sfr_info[buf] = tmp;
+   }
+@@ -146,8 +146,8 @@
+ //  if ((da (sfr_info["PSW"].address) & 0x18) != prev_bank) {
+     int offset = da (sfr_info.get("PSW").address) & 0x18; // >> 3) * 8  !!
+     if (DEBUG)
+-      cerr << "Registers offset == " << offset << ". PSW = "
+-	   << da (sfr_info.get("PSW").address) << endl;
++      std::cerr << "Registers offset == " << offset << ". PSW = "
++	   << da (sfr_info.get("PSW").address) << std::endl;
+     SFR tmp;
+     tmp.type = byte;
+     tmp.address = 0x00 + offset; sfr_info["R0"] = tmp;
+@@ -165,7 +165,7 @@
+ void create_sfr_table (void)
+ {
+      if (DEBUG)
+-	  cerr << "Creating sfr addresses table...";
++	  std::cerr << "Creating sfr addresses table...";
+      SFR tmp;
+      tmp.type = byte;
+      tmp.address = 0xE0; sfr_info["A"] = tmp;
+diff -ur yasmin-0.6.0/memview.cc yasmin-0.6.0-c++/memview.cc
+--- yasmin-0.6.0/memview.cc	2000-02-24 17:29:20.000000000 +0100
++++ yasmin-0.6.0-c++/memview.cc	2013-12-06 19:49:56.106274043 +0100
+@@ -21,7 +21,7 @@
+ #include "memory.h"
+ #include "memedit.h"
+ #include <stdio.h>
+-#include <iostream.h>
++#include <iostream>
+ 
+ MemView::MemView (QWidget *parent, const char *name)
+      : QGrid (1, parent, name)
